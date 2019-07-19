@@ -11,12 +11,8 @@ function prettyStack(error, printFile = true) {
         throw new TypeError("error must be instanceof Error");
     }
 
-    const clean = cleanStack(error.stack);
-    const arrStack = clean.split("\n");
-    console.log();
-    // eslint-disable-next-line
-    console.log(" " + bgMagenta(white().bold(` ${arrStack.shift()} `)));
-    console.log();
+    const arrStack = cleanStack(error.stack).split("\n");
+    console.log("\n " + bgMagenta(white().bold(` ${arrStack.shift()} `)) + "\n");
     for (const line of arrStack) {
         const result = /at\s(.*)\s\((.*)\)/.exec(line);
         if (result === null) {
@@ -35,17 +31,24 @@ function prettyStack(error, printFile = true) {
     if (printFile) {
         console.log("");
         const [,, path] = /at\s(.*)\s\((.*)\)/.exec(arrStack[0]);
-        const [fileName, line] = basename(path).split(":");
+        const [fileName, line, char] = basename(path).split(":");
 
         const completePath = join(dirname(path), fileName);
-        const lines = readFileSync(completePath, "utf-8")
+        readFileSync(completePath, "utf-8")
             .split("\n")
-            .filter((value, index) => index >= line - 2 && index <= line);
-
-        for (let id = 0; id < lines.length; id++) {
-            const color = id === 1 ? white().bold : gray().bold;
-            console.log(color(`  ${lines[id]}`));
-        }
+            .forEach((value, index) => {
+                if (index >= line - 2 && index <= line) {
+                    const isTheLine = index === line - 1;
+                    const color = isTheLine ? white().bold : gray().bold;
+                    const arrow = isTheLine ? magenta().bold(">") : " ";
+                    const lineId = ("0" + (index + 1)).slice(-2);
+                    console.log("  " + gray().bold(`${arrow} ${lineId} |`) + color(`  ${value}`));
+                    if (isTheLine) {
+                        const sLen = " ".repeat(lineId.length);
+                        console.log("     " + sLen + gray().bold("|  ") + " ".repeat(char - 1) + magenta().bold("^"));
+                    }
+                }
+            });
         console.log("");
     }
 }
