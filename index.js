@@ -1,3 +1,5 @@
+"use strict";
+
 // Require Node.js Dependencies
 const { basename, dirname, join } = require("path");
 const { readFileSync } = require("fs");
@@ -6,6 +8,12 @@ const { readFileSync } = require("fs");
 const cleanStack = require("clean-stack");
 const { gray, white, magenta, bgMagenta, yellow } = require("kleur");
 
+/**
+ * @function prettyStack
+ * @param {!Error} error
+ * @param {boolean} [printFile=true]
+ * @returns {void}
+ */
 function prettyStack(error, printFile = true) {
     if (!(error instanceof Error)) {
         throw new TypeError("error must be instanceof Error");
