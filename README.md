@@ -19,13 +19,22 @@ $ yarn add @slimio/pretty-stack
 ```
 
 ## Usage example
-TBC
+```js
+const prettyStack = require("@slimio/pretty-stack");
+
+const err = new Error("hello world!");
+prettyStack(err);
+```
 
 ## API
 TBC
 
 ## Dependencies
-This project have no dependencies.
+
+|Name|Refactoring|Security Risk|Usage|
+|---|---|---|---|
+|[clean-stack](https://github.com/sindresorhus/clean-stack#readme)|⚠️Major|Low|Clean stack trace|
+|[kleur](https://github.com/lukeed/kleur)|Minor|Low|TTY color|
 
 ## License
 MIT
