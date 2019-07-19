@@ -15,7 +15,13 @@
         "type": "git",
         "url": "git+https://github.com/SlimIO/pretty-stack.git"
     },
-    "keywords": [],
+    "keywords": [
+        "javascript",
+        "clean",
+        "stack",
+        "pretty",
+        "colored"
+    ],
     "author": "SlimIO",
     "license": "MIT",
     "bugs": {
