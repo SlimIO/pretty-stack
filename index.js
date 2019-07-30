@@ -20,14 +20,23 @@ function prettyStack(error, printFile = true) {
     }
 
     const arrStack = cleanStack(error.stack).split("\n");
+    let firstStack = null;
+
     console.log("\n " + bgMagenta(white().bold(` ${arrStack.shift()} `)) + "\n");
     for (const line of arrStack) {
-        const result = /at\s(.*)\s\((.*)\)/.exec(line);
+        const result = /at\s(.*)|at\s(.*)\s\((.*)\)/.exec(line);
         if (result === null) {
             continue;
         }
+        if (firstStack === null) {
+            firstStack = line;
+        }
 
-        const [, at, path] = result;
+        let [, at, path] = result;
+        if (typeof path === "undefined") {
+            path = at;
+            at = "";
+        }
         const [fileName, fileLine] = basename(path).split(":");
         console.log(
             gray().bold(`  o at ${white().bold(at)} (${magenta().bold(fileName)} ${yellow().bold(`at line ${fileLine}`)})`)
@@ -36,9 +45,9 @@ function prettyStack(error, printFile = true) {
         console.log();
     }
 
-    if (printFile) {
+    if (printFile && firstStack !== null) {
         console.log("");
-        const [,, path] = /at\s(.*)\s\((.*)\)/.exec(arrStack[0]);
+        const [, at, path = at] = /at\s(.*)|at\s(.*)\s\((.*)\)/.exec(firstStack);
         const [fileName, line, char] = basename(path).split(":");
 
         const completePath = join(dirname(path), fileName);
