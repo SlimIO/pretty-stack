@@ -22,6 +22,10 @@
         "pretty",
         "colored"
     ],
+    "files": [
+        "index.d.ts",
+        "index.js"
+    ],
     "author": "SlimIO",
     "license": "MIT",
     "bugs": {
