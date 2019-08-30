@@ -3,7 +3,11 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/SlimIO/is/commit-activity)
 ![MIT](https://img.shields.io/github/license/mashape/apistatus.svg)
 
-Pretty Stack Trace to stdout in TTY
+Pretty Stack Trace to stdout in TTY. Use clean-stack of sindresorhus under the hood to improve the whole experience.
+
+<p align="center">
+    <img src="https://i.imgur.com/YSPu6oV.png">
+</p>
 
 ## Requirements
 - [Node.js](https://nodejs.org/en/) v10 or higher
@@ -33,8 +37,8 @@ TBC
 
 |Name|Refactoring|Security Risk|Usage|
 |---|---|---|---|
-|[clean-stack](https://github.com/sindresorhus/clean-stack#readme)|⚠️Major|Low|Clean stack trace|
-|[kleur](https://github.com/lukeed/kleur)|Minor|Low|TTY color|
+|[clean-stack](https://github.com/sindresorhus/clean-stack#readme)|Minor|Low|Cleanup Javascript stack-trace|
+|[kleur](https://github.com/lukeed/kleur)|Minor|Low|The fastest Node.js library for formatting terminal text with ANSI colors~!|
 
 ## License
 MIT
