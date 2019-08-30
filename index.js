@@ -6,7 +6,26 @@ const { readFileSync } = require("fs");
 
 // Require Third-party Dependencies
 const cleanStack = require("clean-stack");
-const { gray, white, magenta, bgMagenta, yellow } = require("kleur");
+const { gray, white, cyan, yellow, bgRed, red } = require("kleur");
+
+/**
+ * @function linesLength
+ * @param {!number} length
+ * @returns {number}
+ */
+function linesLength(length) {
+    if (length >= 0 && length <= 9) {
+        return 1;
+    }
+    else if (length >= 10 && length <= 99) {
+        return 2;
+    }
+    else if (length >= 100 && length <= 999) {
+        return 3;
+    }
+
+    return 4;
+}
 
 /**
  * @function prettyStack
@@ -20,11 +39,12 @@ function prettyStack(error, printFile = true) {
     }
 
     const arrStack = cleanStack(error.stack).split("\n");
+    const mem = new Set();
     let firstStack = null;
 
-    console.log("\n " + bgMagenta(white().bold(` ${arrStack.shift()} `)) + "\n");
+    console.log("\n " + bgRed(white().bold(` ${arrStack.shift()} `)) + "\n");
     for (const line of arrStack) {
-        const result = /at\s(.*)|at\s(.*)\s\((.*)\)/.exec(line);
+        const result = /at\s(.*)\s\((.*)\)/.exec(line);
         if (result === null) {
             continue;
         }
@@ -37,35 +57,45 @@ function prettyStack(error, printFile = true) {
             path = at;
             at = "";
         }
+
         const [fileName, fileLine] = basename(path).split(":");
+        const fullName = join(dirname(path), fileName);
+
         console.log(
-            gray().bold(`  o at ${white().bold(at)} (${magenta().bold(fileName)} ${yellow().bold(`at line ${fileLine}`)})`)
+            gray().bold(`  o at ${white().bold(at)} (${cyan().bold(fileName)} ${yellow().bold(`at line ${fileLine}`)})`)
         );
-        console.log(gray().bold(`    ${path}`));
-        console.log();
+        if (!mem.has(fullName)) {
+            console.log(gray().bold(`    ${path}\n`));
+            mem.add(fullName);
+        }
     }
 
     if (printFile && firstStack !== null) {
         console.log("");
-        const [, at, path = at] = /at\s(.*)|at\s(.*)\s\((.*)\)/.exec(firstStack);
+        const [, at, path = at] = /at\s(.*)\s\((.*)\)/.exec(firstStack);
         const [fileName, line, char] = basename(path).split(":");
 
         const completePath = join(dirname(path), fileName);
-        readFileSync(completePath, "utf-8")
-            .split("\n")
-            .forEach((value, index) => {
+        try {
+            const lines = readFileSync(completePath, "utf-8").split("\n");
+            const len = linesLength(lines.length);
+            lines.forEach((value, index) => {
                 if (index >= line - 2 && index <= line) {
                     const isTheLine = index === line - 1;
                     const color = isTheLine ? white().bold : gray().bold;
-                    const arrow = isTheLine ? magenta().bold(">") : " ";
-                    const lineId = ("0" + (index + 1)).slice(-2);
-                    console.log("  " + gray().bold(`${arrow} ${lineId} |`) + color(`  ${value}`));
+                    const arrow = isTheLine ? cyan().bold(">") : " ";
+                    const toAdd = len - `${index + 1}`.length;
+                    console.log("  " + gray().bold(`${arrow} ${index + 1}${" ".repeat(toAdd)} |`) + color(`  ${value}`));
                     if (isTheLine) {
-                        const sLen = " ".repeat(lineId.length);
-                        console.log("     " + sLen + gray().bold("|  ") + " ".repeat(char - 1) + magenta().bold("^"));
+                        const sLen = " ".repeat(len);
+                        console.log("     " + sLen + gray().bold("|  ") + " ".repeat(char - 1) + cyan().bold("^"));
                     }
                 }
             });
+        }
+        catch (error) {
+            // Ignore
+        }
         console.log("");
     }
 }
