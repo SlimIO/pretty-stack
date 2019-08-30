@@ -34,7 +34,7 @@
     },
     "homepage": "https://github.com/SlimIO/pretty-stack#readme",
     "dependencies": {
-        "clean-stack": "^2.1.0",
+        "clean-stack": "^2.2.0",
         "kleur": "^3.0.3"
     },
     "devDependencies": {
