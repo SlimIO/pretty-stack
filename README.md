@@ -6,7 +6,7 @@
 Pretty Stack Trace to stdout in TTY
 
 ## Requirements
-- Node.js v10 or higher
+- [Node.js](https://nodejs.org/en/) v10 or higher
 
 ## Getting Started
 
