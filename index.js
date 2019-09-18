@@ -28,17 +28,33 @@ function linesLength(length) {
 }
 
 /**
+ * @function transformToArrayStack
+ * @param {*} obj
+ * @returns {string[]}
+ * @throws {Error}
+ */
+function transformToArrayStack(obj) {
+    if (obj instanceof Error) {
+        return cleanStack(error.stack).split("\n");
+    }
+    else if (Array.isArray(obj)) {
+        return cleanStack(obj.join("\n")).split("\n");
+    }
+    else if (typeof obj === "string") {
+        return cleanStack(obj).split("\n");
+    }
+
+    throw new Error("Unsupported error arg type");
+}
+
+/**
  * @function prettyStack
  * @param {!Error} error
  * @param {boolean} [printFile=true]
  * @returns {void}
  */
 function prettyStack(error, printFile = true) {
-    if (!(error instanceof Error)) {
-        throw new TypeError("error must be instanceof Error");
-    }
-
-    const arrStack = cleanStack(error.stack).split("\n");
+    const arrStack = transformToArrayStack(error);
     const mem = new Set();
     let firstStack = null;
 
