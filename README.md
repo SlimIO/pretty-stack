@@ -27,11 +27,15 @@ $ yarn add @slimio/pretty-stack
 const prettyStack = require("@slimio/pretty-stack");
 
 const err = new Error("hello world!");
-prettyStack(err);
+prettyStack(err, true);
+// or go with the stack array
+prettyStack(err.stack, false);
 ```
 
 ## API
-TBC
+
+### prettyStack(error: Error | string | string[], printFile?: boolean): void
+This method can handle many input types. In case the input is a string it will be splitted by `\n`.
 
 ## Dependencies
 
