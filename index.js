@@ -48,6 +48,20 @@ function transformToArrayStack(obj) {
 }
 
 /**
+ * @function getPattern
+ * @param {!string} line
+ * @returns {any}
+ */
+function getPattern(line) {
+    const result = /at\s(.*)\s\((.*)\)/.exec(line);
+    if (result !== null) {
+        return result;
+    }
+
+    return /at\s(.*)/.exec(line);
+}
+
+/**
  * @function prettyStack
  * @param {!Error} error
  * @param {boolean} [printFile=true]
@@ -59,8 +73,9 @@ function prettyStack(error, printFile = true) {
     let firstStack = null;
 
     console.log("\n " + bgRed(white().bold(` ${arrStack.shift()} `)) + "\n");
+    // console.log(arrStack);
     for (const line of arrStack) {
-        const result = /at\s(.*)\s\((.*)\)/.exec(line);
+        const result = getPattern(line);
         if (result === null) {
             continue;
         }
@@ -71,15 +86,15 @@ function prettyStack(error, printFile = true) {
         let [, at, path] = result;
         if (typeof path === "undefined") {
             path = at;
-            at = "";
+            at = null;
         }
 
         const [fileName, fileLine] = basename(path).split(":");
         const fullName = join(dirname(path), fileName);
 
-        console.log(
-            gray().bold(`  o at ${white().bold(at)} (${cyan().bold(fileName)} ${yellow().bold(`at line ${fileLine}`)})`)
-        );
+        const linePosition = `${cyan().bold(fileName)} ${yellow().bold(`at line ${fileLine}`)}`;
+        const lineToLog = at === null ? linePosition : `at ${white().bold(at)} (${linePosition})`;
+        console.log(gray().bold(`  o ${lineToLog}`));
         if (!mem.has(fullName)) {
             console.log(gray().bold(`    ${path}\n`));
             mem.add(fullName);
@@ -88,7 +103,7 @@ function prettyStack(error, printFile = true) {
 
     if (printFile && firstStack !== null) {
         console.log("");
-        const [, at, path = at] = /at\s(.*)\s\((.*)\)/.exec(firstStack);
+        const [, at, path = at] = getPattern(firstStack);
         const [fileName, line, char] = basename(path).split(":");
 
         const completePath = join(dirname(path), fileName);
