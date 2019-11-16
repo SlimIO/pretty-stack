@@ -24,7 +24,6 @@
     ],
     "files": [
         "index.d.ts",
-        "src",
         "index.js"
     ],
     "author": "SlimIO",
