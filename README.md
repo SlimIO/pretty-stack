@@ -5,7 +5,8 @@
 ![dep](https://img.shields.io/david/SlimIO/pretty-stack)
 ![size](https://img.shields.io/github/languages/code-size/SlimIO/pretty-stack)
 ![known vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/SlimIO/pretty-stack)
-[![Build Status](https://travis-ci.com/SlimIO/pretty-stack.svg?branch=master)](https://travis-ci.com/SlimIO/pretty-stack) [![Greenkeeper badge](https://badges.greenkeeper.io/SlimIO/pretty-stack.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.com/SlimIO/pretty-stack.svg?branch=master)](https://travis-ci.com/SlimIO/pretty-stack)
+[![Greenkeeper badge](https://badges.greenkeeper.io/SlimIO/pretty-stack.svg)](https://greenkeeper.io/)
 
 Pretty Stack Trace to stdout in TTY. Use clean-stack of sindresorhus under the hood to improve the whole experience.
 
