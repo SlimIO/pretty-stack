@@ -4,6 +4,7 @@
 ![MIT](https://img.shields.io/github/license/mashape/apistatus.svg)
 ![dep](https://img.shields.io/david/SlimIO/pretty-stack)
 ![size](https://img.shields.io/github/languages/code-size/SlimIO/pretty-stack)
+[![Build Status](https://travis-ci.com/SlimIO/pretty-stack.svg?branch=master)](https://travis-ci.com/SlimIO/pretty-stack)
 
 Pretty Stack Trace to stdout in TTY. Use clean-stack of sindresorhus under the hood to improve the whole experience.
 
