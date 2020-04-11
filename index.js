@@ -35,7 +35,7 @@ function linesLength(length) {
  */
 function transformToArrayStack(obj) {
     if (obj instanceof Error) {
-        return cleanStack(error.stack).split("\n");
+        return cleanStack(obj.stack).split("\n");
     }
     else if (Array.isArray(obj)) {
         return cleanStack(obj.join("\n")).split("\n");
